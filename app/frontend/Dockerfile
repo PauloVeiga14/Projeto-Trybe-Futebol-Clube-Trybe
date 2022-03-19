@@ -1,7 +1,9 @@
 FROM node:16-alpine
 
-WORKDIR /app
+WORKDIR /frontend
 
-COPY ..
+COPY  . .
+
+EXPOSE 3000
 
 CMD ["npm", "start"]

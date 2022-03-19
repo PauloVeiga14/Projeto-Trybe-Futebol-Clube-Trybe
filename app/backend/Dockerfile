@@ -1,7 +1,9 @@
 FROM node:16-alpine
 
+WORKDIR /backend
+
 COPY  . .
 
-WORKDIR ./src/server
+EXPOSE 3001
 
 CMD ["npm", "start"]
