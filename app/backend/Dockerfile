@@ -1,7 +1,7 @@
 FROM node:16-alpine
 
-WORKDIR /app
+COPY  . .
 
-COPY ..
+WORKDIR ./src/server
 
 CMD ["npm", "start"]
