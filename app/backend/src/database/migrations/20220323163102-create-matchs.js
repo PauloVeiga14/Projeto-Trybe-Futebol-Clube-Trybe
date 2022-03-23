@@ -3,22 +3,27 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('Matchs', {
       id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
       },
       homeTeam: {
-        type: Sequelize.STRING
-      },
-      createdAt: {
+        type: Sequelize.STRING,
         allowNull: false,
-        type: Sequelize.DATE
       },
-      updatedAt: {
+      homeTeamGoals: {
+        type: Sequelize.STRING,
         allowNull: false,
-        type: Sequelize.DATE
-      }
+      },
+      awayTeam: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      awayTeamGoals: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {

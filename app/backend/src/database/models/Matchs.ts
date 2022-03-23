@@ -24,19 +24,15 @@ Matchs.init({
   },
   homeTeam: {
     type: DataTypes.STRING,
-    allowNull: false,
   },
   homeTeamGoals: {
     type: DataTypes.INTEGER,
-    allowNull: false,
   },
   awayTeam: {
     type: DataTypes.STRING,
-    allowNull: false,
   },
   awayTeamGoals: {
     type: DataTypes.INTEGER,
-    allowNull: false,
   },
 }, {
   sequelize: db,
