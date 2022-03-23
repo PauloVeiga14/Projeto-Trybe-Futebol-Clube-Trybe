@@ -10,19 +10,15 @@ module.exports = {
       },
       homeTeam: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
       homeTeamGoals: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
       awayTeam: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
       awayTeamGoals: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
     });
   },
