@@ -9,7 +9,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       ClubName: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        field: 'club_name',
       },
     });
   },

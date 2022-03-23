@@ -9,17 +9,31 @@ module.exports = {
         primaryKey: true,
       },
       homeTeam: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
+        field: 'home_team',
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE', 
+        refererences: { model: 'Clubs', key: 'id' },
       },
       homeTeamGoals: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
+        field: 'home_team_goals', 
       },
       awayTeam: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
+        field: 'away_team',
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE', 
+        refererences: { model: 'Clubs', key: 'id' },
       },
       awayTeamGoals: {
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
+        field: 'away_team_goals',
       },
+      inProgress: {
+        type: Sequelize.INTEGER,
+        field: 'in_progress',
+      }
     });
   },
   down: async (queryInterface, Sequelize) => {
