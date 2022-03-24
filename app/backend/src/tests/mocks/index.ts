@@ -1,4 +1,4 @@
-export const mockLogin = {
+export const mockResponseLogin = {
     user: {
       id: 1,
       username: "Admin",

@@ -2,21 +2,94 @@ import * as sinon from 'sinon'; // Faz o stub do método
 import * as chai from 'chai';
 import chaiHttp = require('chai-http'); // Simula requisições
 import { app } from '../app';
+import Users from '../database/models'
 import { Response } from 'superagent';
-import { mockLogin } from './mocks'
+import { mockResponseLogin } from './mocks'
 
 chai.use(chaiHttp);
 
 const { expect } = chai;
 
-// Contrato:
-// 1) A rota é do tipo POST.
-// 2) Se o login estiver correto, o retorno é o status 200.
-// 3) Se o login estiver correto, enviar para página de jogos.
-// 4) Se o login estiver errado, o retorno é o status 400.
-// 5) Se não possuir token: status 401.
+describe('POST /Login', () => {
+  describe('Quando não são enviadas username e password', () => {
+    
+    let response;
+    
+    before(async () => {
+      response = await chai
+        .request(app)
+        .post('/Login')
+        .send({});
+    })
 
-describe('Testa o Login', () => {
+    it('Retorna status 401', () => {
+      expect(response.status).to.be.equal(401);
+    })
+
+    it('Retorna mensagem de erro', () => {
+      const message = 'All fields must be filled'
+      expect(response.body.message).to.be.equal(message);
+    })
+  })
+
+  describe('Quando são enviadas credenciais erradas', () => {
+
+    let response;
+
+    before(async () => {
+
+      sinon.stub(Users, 'findOne')
+        .resolves({
+          email: 'paulo@trybe.com',
+          password: '12345',
+        })
+
+      response = await chai
+        .request(app)
+        .post('/Login')
+        .send({
+          email: '',
+          password: '',
+        });
+    })
+
+    after(() => {
+      Users.findOne.restore();
+    })
+
+    it('Retorna status 401', () => {
+      expect(response.status).to.be.equal(401);
+    })
+
+    it('Retorna mensagem de erro', () => {
+      const message = 'Incorrect email or password'
+      expect(response.body.message).to.be.equal(message);
+    })
+  })
+
+  describe('Quando as informações são enviadas corretamente', () => {
+
+    let response;
+
+    before(async () => {
+      response = await chai
+        .request(app)
+        .post('/Login')
+        .send({
+          email: 'admin@admin.com',
+          password: '', // INCLUIR A SENHA CORRETAMENTE
+        });
+    })
+
+    it('Retorna Status 200', () => {
+      expect(response.status).to.be.equal(200);
+    })
+
+    it('Retorna os dados do usuário', () => {
+      expect(response.body).to.be.equal(mockResponseLogin);
+    })
+  })
+})
 
   
   // it('Essa requisição deve retornar status 200', () => {
