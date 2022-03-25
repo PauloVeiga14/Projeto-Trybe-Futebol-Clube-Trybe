@@ -13,7 +13,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('POST /Login', () => {
+describe('POST /login', () => {
   describe('Quando não são enviadas username e password', () => {
     
     let response: Response;
@@ -40,6 +40,7 @@ describe('POST /Login', () => {
     let response: Response;
 
     before(async () => {
+      
       sinon.stub(Users, "findOne").resolves(mockResponseLogin as Users);
 
       response = await chai
@@ -67,7 +68,7 @@ describe('POST /Login', () => {
 
   describe('Quando as informações são enviadas corretamente', () => {
 
-    let response;
+    let response: Response;
 
     before(async () => {
 

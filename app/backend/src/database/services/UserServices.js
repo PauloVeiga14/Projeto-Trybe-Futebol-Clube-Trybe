@@ -36,18 +36,39 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var UserServices = require("../services/UserServices");
-var userLogin = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, email, password, _b, status, message;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
-            case 0:
-                _a = req.body, email = _a.email, password = _a.password;
-                return [4 /*yield*/, UserServices.getUser(email, password)];
+var bcryptjs = require("bcryptjs");
+var fs = require("fs");
+var jwt = require("jsonwebtoken");
+var Users_1 = require("../models/Users");
+var getUser = function (email, password) { return __awaiter(void 0, void 0, void 0, function () {
+    var user, cryptoPassword, userFormat, secret, token;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, Users_1["default"].findOne({ where: { email: email } })];
             case 1:
-                _b = _c.sent(), status = _b.status, message = _b.message;
-                return [2 /*return*/, res.status(status).json(message)];
+                user = _a.sent();
+                if (!user) {
+                    return [2 /*return*/, { status: 401, message: 'Incorrect email or password' }];
+                }
+                return [4 /*yield*/, bcryptjs.compare(password, user.password)];
+            case 2:
+                cryptoPassword = _a.sent();
+                if (cryptoPassword === false) {
+                    return [2 /*return*/, { status: 401, message: 'Incorrect email or password' }];
+                }
+                userFormat = {
+                    id: user.id,
+                    username: user.username,
+                    role: user.role,
+                    email: user.email
+                };
+                secret = fs.readFileSync('jwt.evaluation.key');
+                token = jwt.sign({ data: email }, secret);
+                return [2 /*return*/, {
+                        status: 200,
+                        message: { user: userFormat, token: token }
+                    }];
         }
     });
 }); };
-exports["default"] = userLogin;
+exports["default"] = getUser;
