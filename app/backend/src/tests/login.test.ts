@@ -2,10 +2,12 @@ import * as sinon from 'sinon'; // Faz o stub do método
 import * as chai from 'chai';
 import * as bcryptjs from 'bcryptjs';
 import chaiHttp = require('chai-http'); // Simula requisições
+
 import { app } from '../app';
-import Users from '../database/models'
+import Users from '../database/models/Users';
+
 import { Response } from 'superagent';
-import { mockResponseLogin } from './mocks'
+import { mockReturnLogin, mockResponseLogin } from './mocks'
 
 chai.use(chaiHttp);
 
@@ -14,7 +16,7 @@ const { expect } = chai;
 describe('POST /Login', () => {
   describe('Quando não são enviadas username e password', () => {
     
-    let response;
+    let response: Response;
     
     before(async () => {
       response = await chai
@@ -35,15 +37,10 @@ describe('POST /Login', () => {
 
   describe('Quando são enviadas credenciais erradas', () => {
 
-    let response;
+    let response: Response;
 
     before(async () => {
-
-      sinon.stub(Users, 'findOne')
-        .resolves({
-          email: 'paulo@trybe.com',
-          password: '12345',
-        }); // Verificar qual é a resposta esperada
+      sinon.stub(Users, "findOne").resolves(mockResponseLogin as Users);
 
       response = await chai
         .request(app)
@@ -55,7 +52,7 @@ describe('POST /Login', () => {
     });
 
     after(() => {
-      Users.findOne.restore();
+      (Users.findOne as sinon.SinonStub).restore();
     });
 
     it('Retorna status 401', () => {
@@ -74,7 +71,7 @@ describe('POST /Login', () => {
 
     before(async () => {
 
-      sinon.stub(Users, 'findOne').resolves({mockResponseLogin});
+      sinon.stub(Users, 'findOne').resolves(mockResponseLogin as Users);
       sinon.stub(bcryptjs, "compare").resolves(true);
 
       response = await chai
@@ -86,12 +83,16 @@ describe('POST /Login', () => {
         });
     });
 
+    after(() => {
+      (Users.findOne as sinon.SinonStub).restore();
+    });
+
     it('Retorna Status 200', () => {
       expect(response.status).to.be.equal(200);
     });
 
     it('Retorna os dados do usuário', () => {
-      expect(response.body).to.be.equal(mockResponseLogin);
+      expect(response.body).to.be.equal(mockReturnLogin);
     });
   });
 });
