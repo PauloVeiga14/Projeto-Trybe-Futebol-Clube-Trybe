@@ -18,7 +18,7 @@ class App {
 
     this.app.use(accessControl);
     this.app.use(express.json());
-    this.app.route('/Login').post(); // Rota Inicial do Login. Resta incluir validaçõs e controles.
+    this.app.route('/login').post(); // Rota Inicial do Login. Resta incluir validaçõs e controles.
   }
 
   public start(PORT: string | number):void {
