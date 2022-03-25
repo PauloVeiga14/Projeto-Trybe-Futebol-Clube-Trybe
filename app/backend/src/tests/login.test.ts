@@ -43,7 +43,7 @@ describe('POST /Login', () => {
         .resolves({
           email: 'paulo@trybe.com',
           password: '12345',
-        });
+        }); // Verificar qual é a resposta esperada
 
       response = await chai
         .request(app)
