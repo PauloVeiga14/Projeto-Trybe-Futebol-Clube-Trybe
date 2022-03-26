@@ -7,11 +7,13 @@ import IgetUserValidate from '../interfaces/getUserValidate';
 const getUser = async (email: string, password: string): Promise<IgetUserValidate> => {
   const user = await Users.findOne({ where: { email } });
 
-  if (!user) { return { status: 401, message: 'Incorrect email or password' }; }
+  if (!user) { return { status: 401, message: { message: 'Incorrect email or password' } }; }
 
   const cryptoPassword = await bcryptjs.compare(password, user.password); // https://www.npmjs.com/package/bcryptjs
 
-  if (cryptoPassword === false) { return { status: 401, message: 'Incorrect email or password' }; }
+  if (cryptoPassword === false) {
+    return { status: 401, message: { message: 'Incorrect email or password' } };
+  }
 
   const userFormat = {
     id: user.id,
@@ -21,7 +23,7 @@ const getUser = async (email: string, password: string): Promise<IgetUserValidat
   };
 
   const secret = fs.readFileSync('jwt.evaluation.key');
-  const token = jwt.sign({ data: email }, secret);
+  const token = jwt.sign({ email }, secret);
 
   return {
     status: 200,

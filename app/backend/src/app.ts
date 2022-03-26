@@ -1,6 +1,7 @@
 import * as express from 'express';
-import * as Login from './database/controllers/LoginControllers';
 import * as cors from 'cors';
+import * as Login from './database/controllers/LoginControllers';
+import validateLoginInputs from './database/middlewares/validateLogin';
 
 class App {
   public app: express.Express;
@@ -21,7 +22,7 @@ class App {
     this.app.use(accessControl);
     this.app.use(express.json());
     this.app.use(cors());
-    this.app.route('/login').post(Login.default); // Rota Inicial do Login. Resta incluir validaçõs e controles.
+    this.app.route('/login').post(validateLoginInputs, Login.default); // Rota Inicial do Login. Resta incluir validaçõs e controles.
   }
 
   public start(PORT: string | number):void {
