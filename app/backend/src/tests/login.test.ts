@@ -13,7 +13,7 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-describe('POST /login', () => {
+describe('Testando a rota POST /login', () => {
   describe('Quando não são enviadas username e password', () => {
     
     let response: Response;
