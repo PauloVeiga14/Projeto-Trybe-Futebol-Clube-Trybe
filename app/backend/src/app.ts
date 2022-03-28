@@ -23,7 +23,8 @@ class App {
     this.app.use(express.json());
     this.app.use(cors());
     this.app.route('/login').post(validateLoginInputs, Login.userLogin);
-    this.app.route('/login/validate').get();
+    this.app.route('/login/validate').get(Login.userValidate);
+    this.app.route('/clubs').get();
   }
 
   public start(PORT: string | number):void {

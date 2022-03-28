@@ -41,10 +41,10 @@ export const validateToken = async (token: string) => {
   if (typeof decodedToken === 'object') {
     user = await Users.findOne({ where: { email: decodedToken.email } });
     if (user !== null) {
-      return { status: 200, data: user };
+      return { status: 200, data: user.role };
     }
     return { status: 400, data: 'User not finded' };
   }
 
-  return { status: 400, data: 'Incorrect Token' };
+  return { status: 400, data: 'Invalid Token' };
 };
