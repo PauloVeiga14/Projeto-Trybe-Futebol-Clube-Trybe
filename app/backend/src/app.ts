@@ -22,7 +22,8 @@ class App {
     this.app.use(accessControl);
     this.app.use(express.json());
     this.app.use(cors());
-    this.app.route('/login').post(validateLoginInputs, Login.default); // Rota Inicial do Login. Resta incluir validaçõs e controles.
+    this.app.route('/login').post(validateLoginInputs, Login.userLogin);
+    this.app.route('/login/validate').get();
   }
 
   public start(PORT: string | number):void {

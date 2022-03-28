@@ -4,7 +4,7 @@ import * as jwt from 'jsonwebtoken';
 import Users from '../models/Users';
 import IgetUserValidate from '../interfaces/getUserValidate';
 
-const getUser = async (email: string, password: string): Promise<IgetUserValidate> => {
+export const getUser = async (email: string, password: string): Promise<IgetUserValidate> => {
   const user = await Users.findOne({ where: { email } });
 
   if (!user) { return { status: 401, message: { message: 'Incorrect email or password' } }; }
@@ -31,4 +31,20 @@ const getUser = async (email: string, password: string): Promise<IgetUserValidat
   };
 };
 
-export default getUser;
+// Terminar a função:
+
+export const validateToken = async (token: string) => {
+  const secret = fs.readFileSync('jwt.evaluation.key');
+  const decodedToken: string | jwt.JwtPayload = jwt.verify(token, secret);
+  let user;
+
+  if (typeof decodedToken === 'object') {
+    user = await Users.findOne({ where: { email: decodedToken.email } });
+    if (user !== null) {
+      return { status: 200, data: user };
+    }
+    return { status: 400, data: 'User not finded' };
+  }
+
+  return { status: 400, data: 'Incorrect Token' };
+};
