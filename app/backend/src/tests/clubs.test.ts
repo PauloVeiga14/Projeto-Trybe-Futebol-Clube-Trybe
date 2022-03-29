@@ -12,11 +12,6 @@ chai.use(chaiHttp);
 
 const { expect } = chai;
 
-// Contratos:
-// 1) Retorna um array de objetos com o id e o nome do clube.
-// 2) A rota clubs/:id retorna o id e o nome de um clube específico.
-// 3) A rota clubs/:id retorna uma mensagem quando o id enviado não existe.
-
 describe('Testando as rotas GET /clubs e /clubs/:id', () => {
   describe('Testa o retorno correto da rota /clubs', () => {
 
