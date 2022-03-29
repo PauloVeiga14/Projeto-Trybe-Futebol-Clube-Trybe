@@ -27,6 +27,7 @@ class App {
     this.app.route('/login/validate').get(Login.userValidate);
     this.app.route('/clubs').get(Clubs.getAllClubs);
     this.app.route('/clubs/:id').get(Clubs.getClubById);
+    this.app.route('/matchs').get();
   }
 
   public start(PORT: string | number):void {
