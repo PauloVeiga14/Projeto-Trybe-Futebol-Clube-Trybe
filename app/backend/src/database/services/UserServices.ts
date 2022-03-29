@@ -31,8 +31,6 @@ export const getUser = async (email: string, password: string): Promise<IgetUser
   };
 };
 
-// Terminar a função:
-
 export const validateToken = async (token: string) => {
   const secret = fs.readFileSync('jwt.evaluation.key');
   const decodedToken: string | jwt.JwtPayload = jwt.verify(token, secret);

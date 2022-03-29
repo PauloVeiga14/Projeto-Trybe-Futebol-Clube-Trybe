@@ -66,13 +66,77 @@ describe('Testando a rota POST /login', () => {
     });
   });
 
+  describe('Quando a senha enviada está incorreta', () => {
+
+    let response: Response;
+
+    before(async () => {
+
+      sinon.stub(Users, 'findOne').resolves(mockResponseLogin as Users);
+      sinon.stub(bcryptjs, "compare").resolves(false);
+
+      response = await chai
+        .request(app)
+        .post('/login')
+        .send({
+          email: 'admin@admin.com',
+          password: 'password',
+        });
+    });
+
+    after(() => {
+      (Users.findOne as sinon.SinonStub).restore();
+      (bcryptjs.compare as sinon.SinonStub).restore();
+    });
+
+    it('Retorna Status 401', () => {
+      expect(response.status).to.be.equal(401);
+    });
+
+    it('Retorna os dados do usuário', () => {
+      const message = 'Incorrect email or password'
+      expect(response.body.message).to.be.equal(message);
+    });  
+  });
+
+  describe('Quando a senha enviada possui menos de 6 caracteres', () => {
+
+    let response: Response;
+
+    before(async () => {
+
+      sinon.stub(Users, 'findOne').resolves(mockResponseLogin as Users);
+
+      response = await chai
+        .request(app)
+        .post('/login')
+        .send({
+          email: 'admin@admin.com',
+          password: 'pass',
+        });
+    });
+
+    after(() => {
+      (Users.findOne as sinon.SinonStub).restore();
+    });
+
+    it('Retorna Status 401', () => {
+      expect(response.status).to.be.equal(401);
+    });
+
+    it('Retorna os dados do usuário', () => {
+      const message = 'Incorrect email or password'
+      expect(response.body.message).to.be.equal(message);
+    });  
+  });
+
   describe('Quando as informações são enviadas corretamente', () => {
 
     let response: Response;
 
     before(async () => {
 
-      sinon.stub(Users, 'findOne').resolves(mockResponseLogin as Users); // https://stackoverflow.com/questions/53813188/how-can-i-cast-custom-type-to-primitive-type
+      sinon.stub(Users, 'findOne').resolves(mockResponseLogin as Users);
       sinon.stub(bcryptjs, "compare").resolves(true);
 
       response = await chai
@@ -86,6 +150,7 @@ describe('Testando a rota POST /login', () => {
 
     after(() => {
       (Users.findOne as sinon.SinonStub).restore();
+      (bcryptjs.compare as sinon.SinonStub).restore();
     });
 
     it('Retorna Status 200', () => {
@@ -98,5 +163,35 @@ describe('Testando a rota POST /login', () => {
       expect(response.body.user.username).to.be.equal(mockReturnLogin.user.username)
       expect(response.body.user.role).to.be.equal(mockReturnLogin.user.role)
     });  
+  });
+});
+
+describe('Testando POST /login/validate', () => {
+  describe('Testando o envio do token correto', () => {
+
+    let response: Response;
+    let authorization = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsImlhdCI6MTY0ODU2Nzc4OH0.1LQ0012Dj9jpWKnLgA8RcOdst4-jhaUko-yk0i1BlYU"
+
+    before(async () => {
+
+      sinon.stub(Users, 'findOne').resolves(mockResponseLogin as Users);
+
+      response = await chai
+        .request(app)
+        .get('/login/validate')
+        .set('Authorization', authorization);
+    });
+
+    after(() => {
+      (Users.findOne as sinon.SinonStub).restore();
+    });
+
+    it('Retorna o status 200', () => {
+      expect(response.status).to.be.equal(200);
+    });
+
+    it('Retorna a função do usuário', () => {
+      expect(response.body).to.be.equal('admin');
+    });
   });
 });

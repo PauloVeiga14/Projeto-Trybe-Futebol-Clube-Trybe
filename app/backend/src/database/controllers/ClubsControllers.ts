@@ -6,11 +6,11 @@ export const getAllClubs = async (_req: Request, res: Response) => {
   return res.status(200).json(listOfClubs);
 };
 
-export const getOneClub = async (req: Request, res: Response) => {
+export const getClubById = async (req: Request, res: Response) => {
   const { id } = req.params;
   const club = await Clubs.findOne({ where: { id } });
 
-  if (club !== undefined) {
+  if (club !== null) {
     return res.status(200).json(club);
   }
 

@@ -36,10 +36,7 @@ describe('Testando as rotas GET /clubs e /clubs/:id', () => {
     })
 
     it('A rota retorna um array com o id e o nome dos clubes', () => {
-      expect(response.body).is.an('array');
-      expect(response.body[0]).haveOwnProperty('id');
-      expect(response.body[0]).haveOwnProperty('clubName');
-      expect(response.body).to.be.equal(mockReturnClubs);
+      expect(response.body).to.deep.equal(mockReturnClubs);
     })
   })
 
@@ -61,10 +58,7 @@ describe('Testando as rotas GET /clubs e /clubs/:id', () => {
     })
   
     it('A rota retorna um objeto com o id e o nome de um clube específico', () => {
-      expect(response.body).is.an('object');
-      expect(response.body).haveOwnProperty('id');
-      expect(response.body).haveOwnProperty('clubName');
-      expect(response.body).to.be.equal(mockReturnClubById);
+      expect(response.body).to.deep.equal(mockReturnClubById);
     })
   })
     
@@ -72,7 +66,7 @@ describe('Testando as rotas GET /clubs e /clubs/:id', () => {
     let response: Response;
   
     before(async () => {
-      response = await chai.request(app).get('/clubs/7')
+      response = await chai.request(app).get('/clubs/700').send({})
     });
 
     it('A rota retorna o status 400', () => {

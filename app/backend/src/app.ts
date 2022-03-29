@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as cors from 'cors';
 import * as Login from './database/controllers/LoginControllers';
+import * as Clubs from './database/controllers/ClubsControllers';
 import validateLoginInputs from './database/middlewares/validateLogin';
 
 class App {
@@ -24,7 +25,8 @@ class App {
     this.app.use(cors());
     this.app.route('/login').post(validateLoginInputs, Login.userLogin);
     this.app.route('/login/validate').get(Login.userValidate);
-    this.app.route('/clubs').get();
+    this.app.route('/clubs').get(Clubs.getAllClubs);
+    this.app.route('/clubs/:id').get(Clubs.getClubById);
   }
 
   public start(PORT: string | number):void {
