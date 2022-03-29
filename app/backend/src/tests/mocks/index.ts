@@ -6,7 +6,9 @@ export const mockReturnLogin = {
     email: "admin@admin.com",
   },
   token:
-    "123.456.789",
+    `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+    eyJlbWFpbCI6ImFkbWluQGFkbWluLmNvbSIsImlhdCI6MTY0ODU1ODI0MH0.
+    79-XdpNlX0v3CNzgreQW7chSCJgopkXWLPhetCim0fA`,
 };
 
 export const mockResponseLogin = {
@@ -84,3 +86,8 @@ export const mockReturnClubs =
     clubName: "São Paulo"
   },
 ];
+
+export const mockReturnClubById = {
+  id: 7,
+  clubName: "Flamengo"
+}

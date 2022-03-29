@@ -61,7 +61,7 @@ describe('Testando a rota POST /login', () => {
     });
 
     it('Retorna mensagem de erro', () => {
-      const message = 'Incorrect email or password'
+      const message = 'All fields must be filled'
       expect(response.body.message).to.be.equal(message);
     });
   });
@@ -72,7 +72,7 @@ describe('Testando a rota POST /login', () => {
 
     before(async () => {
 
-      sinon.stub(Users, 'findOne').resolves(mockResponseLogin as Users);
+      sinon.stub(Users, 'findOne').resolves(mockResponseLogin as Users); // https://stackoverflow.com/questions/53813188/how-can-i-cast-custom-type-to-primitive-type
       sinon.stub(bcryptjs, "compare").resolves(true);
 
       response = await chai
@@ -93,7 +93,10 @@ describe('Testando a rota POST /login', () => {
     });
 
     it('Retorna os dados do usuário', () => {
-      expect(response.body).to.be.equal(mockReturnLogin);
-    });
+      expect(response.body).hasOwnProperty('token');
+      expect(response.body.user.id).to.be.equal(mockReturnLogin.user.id)
+      expect(response.body.user.username).to.be.equal(mockReturnLogin.user.username)
+      expect(response.body.user.role).to.be.equal(mockReturnLogin.user.role)
+    });  
   });
 });
