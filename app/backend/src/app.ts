@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as cors from 'cors';
 import * as Login from './database/controllers/LoginControllers';
 import * as Clubs from './database/controllers/ClubsControllers';
+import * as Matchs from './database/controllers/MatchControllers';
 import validateLoginInputs from './database/middlewares/validateLogin';
 
 class App {
@@ -27,7 +28,7 @@ class App {
     this.app.route('/login/validate').get(Login.userValidate);
     this.app.route('/clubs').get(Clubs.getAllClubs);
     this.app.route('/clubs/:id').get(Clubs.getClubById);
-    this.app.route('/matchs').get();
+    this.app.route('/matchs').get(Matchs.getAll);
   }
 
   public start(PORT: string | number):void {
