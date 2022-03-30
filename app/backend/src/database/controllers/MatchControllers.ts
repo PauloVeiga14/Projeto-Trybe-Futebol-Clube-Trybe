@@ -10,12 +10,12 @@ export const getAll = async (req: Request, res: Response) => {
   }
 
   if (inProgress === 'true') {
-    const { status, data } = await getAllMatchsInProgress(1);
+    const { status, data } = await getAllMatchsInProgress(true);
     return res.status(status).json(data);
   }
 
   if (inProgress === 'false') {
-    const { status, data } = await getAllMatchsInProgress(0);
+    const { status, data } = await getAllMatchsInProgress(false);
     return res.status(status).json(data);
   }
 
