@@ -29,6 +29,7 @@ class App {
     this.app.route('/clubs').get(Clubs.getAllClubs);
     this.app.route('/clubs/:id').get(Clubs.getClubById);
     this.app.route('/matchs').get(Matchs.getAll);
+    this.app.route('/matchs').post(Matchs.create);
   }
 
   public start(PORT: string | number):void {

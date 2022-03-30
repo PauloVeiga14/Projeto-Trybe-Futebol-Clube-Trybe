@@ -44,5 +44,5 @@ export const validateToken = async (token: string) => {
     return { status: 400, data: 'User not finded' };
   }
 
-  return { status: 400, data: 'Invalid Token' };
+  return { status: 401, data: 'Invalid Token' };
 };
