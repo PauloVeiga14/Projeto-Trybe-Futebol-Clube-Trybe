@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { getAllMatchs,
-  getAllMatchsInProgress, createMatch, finishMatch } from '../services/MatchServices';
+  getAllMatchsInProgress, createMatch, finishMatch, editMatch } from '../services/MatchServices';
 
 const errorMessage = 'Something is wrong';
 
@@ -41,6 +41,17 @@ export const finish = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { status, message } = await finishMatch(id);
+    return res.status(status).json(message);
+  } catch {
+    res.status(500).json({ message: errorMessage });
+  }
+};
+
+export const edit = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { homeTeamGoals, awayTeamGoals } = req.body;
+    const { status, message } = await editMatch(id, homeTeamGoals, awayTeamGoals);
     return res.status(status).json(message);
   } catch {
     res.status(500).json({ message: errorMessage });

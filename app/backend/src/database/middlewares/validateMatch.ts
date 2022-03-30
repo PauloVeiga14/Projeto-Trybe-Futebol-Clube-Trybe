@@ -7,13 +7,13 @@ const validateMatch = async (req: Request, res: Response, next: NextFunction) =>
   const homeClub = await Clubs.findOne({ where: { id: homeTeam } });
 
   if (!homeClub) {
-    return res.status(400).json({ message: 'There is no team with such id!' });
+    return res.status(401).json({ message: 'There is no team with such id!' });
   }
 
   const awayClub = await Clubs.findOne({ where: { id: awayTeam } });
 
   if (!awayClub) {
-    return res.status(400).json({ message: 'There is no team with such id!' });
+    return res.status(401).json({ message: 'There is no team with such id!' });
   }
 
   if (homeTeam === awayTeam) {

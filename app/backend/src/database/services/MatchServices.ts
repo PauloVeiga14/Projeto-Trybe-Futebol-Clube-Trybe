@@ -9,7 +9,7 @@ type MatchObject = {
   inProgress: boolean,
 };
 
-// Incluir possibilidades de erro.
+const errorMessage = 'Match not found';
 
 export const getAllMatchs = async () => {
   const matchs = await Matchs.findAll({
@@ -53,7 +53,23 @@ export const finishMatch = async (id:string) => {
   const result = await Matchs.update({ inProgress: false }, { where: { id } });
 
   if (!result) {
-    return { status: 404, message: { message: 'Match not found' } };
+    return { status: 404, message: { message: errorMessage } };
+  }
+
+  return { status: 200, message: { message: `Match ${id} successfully updated!` } };
+};
+
+export const editMatch = async (id:string, homeTeamGoals:number, awayTeamGoals:number) => {
+  const getMatch = await Matchs.findOne({ where: { id } });
+
+  if (!getMatch) {
+    return { status: 404, message: { message: errorMessage } };
+  }
+
+  const result = await Matchs.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+
+  if (!result) {
+    return { status: 404, message: { message: errorMessage } };
   }
 
   return { status: 200, message: { message: `Match ${id} successfully updated!` } };
