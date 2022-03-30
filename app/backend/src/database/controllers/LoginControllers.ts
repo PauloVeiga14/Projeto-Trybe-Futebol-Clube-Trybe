@@ -6,7 +6,7 @@ export const userLogin = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     const { status, message } = await UserServices.getUser(email, password);
     return res.status(status).json(message);
-  } catch (e) {
+  } catch {
     res.status(500).json({ message: 'Something is wrong' });
   }
 };
@@ -20,7 +20,7 @@ export const userValidate = async (req: Request, res: Response) => {
     }
 
     return res.status(401).json({ message: 'Token not found' });
-  } catch (e) {
+  } catch {
     res.status(500).json({ message: 'Something is wrong' });
   }
 };

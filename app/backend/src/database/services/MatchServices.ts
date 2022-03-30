@@ -48,3 +48,13 @@ export const createMatch = async (matchObject: MatchObject) => {
   );
   return { status: 201, data };
 };
+
+export const finishMatch = async (id:string) => {
+  const result = await Matchs.update({ inProgress: false }, { where: { id } });
+
+  if (!result) {
+    return { status: 404, message: { message: 'Match not found' } };
+  }
+
+  return { status: 200, message: { message: `Match ${id} successfully updated!` } };
+};
