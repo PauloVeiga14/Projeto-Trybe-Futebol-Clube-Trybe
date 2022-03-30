@@ -4,6 +4,8 @@ import * as Login from './database/controllers/LoginControllers';
 import * as Clubs from './database/controllers/ClubsControllers';
 import * as Matchs from './database/controllers/MatchControllers';
 import validateLoginInputs from './database/middlewares/validateLogin';
+import validateJWT from './database/middlewares/validateJWT';
+import validateMatch from './database/middlewares/validateMatch';
 
 class App {
   public app: express.Express;
@@ -29,7 +31,7 @@ class App {
     this.app.route('/clubs').get(Clubs.getAllClubs);
     this.app.route('/clubs/:id').get(Clubs.getClubById);
     this.app.route('/matchs').get(Matchs.getAll);
-    this.app.route('/matchs').post(Matchs.create);
+    this.app.route('/matchs').post(validateJWT, validateMatch, Matchs.create);
   }
 
   public start(PORT: string | number):void {
