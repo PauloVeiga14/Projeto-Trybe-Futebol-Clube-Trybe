@@ -34,6 +34,7 @@ class App {
     this.app.route('/matchs').post(validateJWT, validateMatch, Matchs.create);
     this.app.route('/matchs/:id').patch(Matchs.edit);
     this.app.route('/matchs/:id/finish').patch(Matchs.finish);
+    this.app.route('/leaderboard/home').get();
   }
 
   public start(PORT: string | number):void {
