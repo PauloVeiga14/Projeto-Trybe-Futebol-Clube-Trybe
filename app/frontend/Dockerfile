@@ -2,7 +2,7 @@ FROM node:16-alpine
 
 WORKDIR /app/frontend
 
-COPY package ./
+COPY package* ./
 
 RUN npm install
 
@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 3000
 
-ENTRYPOINT ["npm", "start" ]
+ENTRYPOINT ["npm", "start"]
