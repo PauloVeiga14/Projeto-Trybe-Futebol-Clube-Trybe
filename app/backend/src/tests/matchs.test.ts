@@ -6,7 +6,7 @@ import { app } from '../app';
 import Matchs from '../database/models/Matchs';
 
 import { Response } from 'superagent';
-import { mockReturnMatchs, mockMatchsInProgressTrue, mockMatchsInProgressFalse } from './mocks';
+import { mockReturnMatchs, mockMatchsInProgressTrue, mockMatchsInProgressFalse, mockReturnCreate } from './mocks';
 
 chai.use(chaiHttp);
 
@@ -146,5 +146,31 @@ describe('Testa a rota GET /matchs?inProgress', () => {
         expect(response.body.message).to.be.equal(message);
       }); 
     });
+  });
+});
+
+describe('Testa a rota POST /match', () => {
+
+  let response: Response;
+
+  describe('A partida é criada com sucesso', () => {
+
+    before(async () => {
+      sinon.stub(Matchs, 'create').resolves(mockReturnCreate as unknown as Matchs)
+
+      response = await chai.request(app).post('/matchs');
+    });
+
+    after(() => {
+      (Matchs.create as sinon.SinonStub).restore();
+    });
+
+    it('Retorna o status 201', () => {
+      expect(response.status).to.be.equal(201);
+    });
+
+    it('Retorna as informações sobre a partida', () => {
+      expect(response.body).to.be.equal(mockReturnCreate);
+    })
   });
 });
