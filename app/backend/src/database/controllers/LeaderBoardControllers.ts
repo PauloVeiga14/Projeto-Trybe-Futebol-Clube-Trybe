@@ -35,3 +35,46 @@
 // 1º Total de Vitórias; 2º Saldo de gols; 3º Gols a favor; 4º Gols contra.
 
 // warning Atenção: warning Por padrão, as respostas de todos os seus endpoints deverão estar em inglês, mesmo a renderização no front-end estando em português.
+
+// Baby Steps:
+// 1) Uma linha de código deve retornar a quantidade de clubes cadastrados. FEITO!
+// 2) Criar um algoritmo que busque informações de um time em cada partida.
+// 3) Salvar essas informações em um objeto e construir um array de objetos com todos os clubes.
+// 4) Ordenar os objetos pelo número de pontos e critérios de desempate. (PARTE DIFÍCIL).
+
+import { Request, Response } from 'express';
+import { countTeams } from '../services/ClubServices';
+import { getAllMatchsInProgress } from '../services/MatchServices';
+
+const getTeams = async () => {
+  const teams = await countTeams();
+  // [
+  //   {
+  //       "id": 1,
+  //       "clubName": "Avaí/Kindermann"
+  //   },
+  // ]
+  return teams;
+};
+
+const getAllFinishedMatchs = async () => {
+  const matchs = await getAllMatchsInProgress(false);
+  // [
+  //   {
+  //       "id": 1,
+  //       "homeTeam": 16,
+  //       "homeTeamGoals": 7,
+  //       "awayTeam": 8,
+  //       "awayTeamGoals": 1,
+  //       "inProgress": 0,
+  //   },
+  // ]
+  return matchs.data;
+};
+
+export const getTeamInfo = (_req: Request, res: Response) => {
+  const allTeams = getTeams();
+  const allMatchs = getAllFinishedMatchs();
+
+
+};

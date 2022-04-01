@@ -3,6 +3,7 @@ import * as cors from 'cors';
 import * as Login from './database/controllers/LoginControllers';
 import * as Clubs from './database/controllers/ClubsControllers';
 import * as Matchs from './database/controllers/MatchControllers';
+import * as Leaderboard from './database/controllers/LeaderBoardControllers';
 import validateLoginInputs from './database/middlewares/validateLogin';
 import validateJWT from './database/middlewares/validateJWT';
 import validateMatch from './database/middlewares/validateMatch';
@@ -34,7 +35,7 @@ class App {
     this.app.route('/matchs').post(validateJWT, validateMatch, Matchs.create);
     this.app.route('/matchs/:id').patch(Matchs.edit);
     this.app.route('/matchs/:id/finish').patch(Matchs.finish);
-    this.app.route('/leaderboard/home').get();
+    this.app.route('/leaderboard/home').get(Leaderboard.getAllFinishedMatchs);
   }
 
   public start(PORT: string | number):void {
